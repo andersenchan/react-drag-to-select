@@ -65,6 +65,16 @@ export function useSelectionLogic<T extends HTMLElement>({
     }
   }, [containerRef]);
 
+  const getOffset = () => {
+    const eventsElementRect = eventsElement?.getBoundingClientRect();
+    const bodyRect = document.body?.getBoundingClientRect();
+
+    return { 
+      x: (eventsElementRect?.left || 0) - (bodyRect?.left || 0),
+      y: (eventsElementRect?.top || 0) - (bodyRect?.top || 0),
+    };
+  }
+
   /**
    * method to calculate point from event in context of the whole screen
    */
@@ -73,9 +83,12 @@ export function useSelectionLogic<T extends HTMLElement>({
       if (!rect) {
         rect = containerRef.current?.getParentBoundingClientRect();
       }
+
+      const offset: Point = getOffset();
+
       return {
-        x: event.clientX - (rect?.left || 0),
-        y: event.clientY - (rect?.top || 0),
+        x: offset.x + event.clientX - (rect?.left || 0),
+        y: offset.y + event.clientY - (rect?.top || 0),
       };
     },
     [containerRef],
@@ -95,11 +108,13 @@ export function useSelectionLogic<T extends HTMLElement>({
           endPoint: endPoint.current,
         });
 
+        const offset: Point = getOffset();
+
         // calculate box in context of container to compare with items' coordinates
         const boxInContainer: SelectionBox = {
           ...newSelectionBox,
-          top: newSelectionBox.top + (rect?.top || 0),
-          left: newSelectionBox.left + (rect?.left || 0),
+          top: newSelectionBox.top + (rect?.top || 0) - offset.y,
+          left: newSelectionBox.left + (rect?.left || 0) - offset.x,
         };
 
         // we detect move only after some small movement

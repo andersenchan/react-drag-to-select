@@ -20,7 +20,7 @@ export interface UseSelectionContainerParams<T extends HTMLElement> {
   onSelectionChange: OnSelectionChange;
   isEnabled?: boolean;
   selectionProps?: MouseSelectionProps;
-  eventsElement?: Window | T | null;
+  eventsElement?: Window | T | null | any;
 }
 
 /**
