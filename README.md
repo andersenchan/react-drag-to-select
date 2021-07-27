@@ -2,6 +2,16 @@
 
 Original Repository: https://github.com/AirLabsTeam/react-drag-to-select
 
+## Installation
+
+To install, run
+
+```
+npm install react-drag-to-select-centered
+```
+
+## Description
+
 Fixed a bug where the select box was being drawn starting from the top left of the page instead of starting from the top left of the select box container.
 
 Old behaviour:
